@@ -1,0 +1,22 @@
+import hashlib
+import random
+import time
+
+class CryptoMiner:
+    def __init__(self, wallet_address):
+        self.wallet_address = wallet_address
+        self.mined_coins = 0
+
+    def mine(self):
+        # Simulate mining process
+        while True:
+            block_data = f"Block data {random.randint(1, 10000)}"
+            block_hash = hashlib.sha256(block_data.encode()).hexdigest()
+            print(f"Mined Block with Hash: {block_hash}")
+            self.mined_coins += 1
+            time.sleep(1)  # Simulate time taken to mine
+
+    def add_to_wallet(self):
+        # Integrate with wallet API here
+        # This is a placeholder for actual wallet integration
+        print(f"Adding {self.mined_coins} coins to wallet {self.wallet_address}")
