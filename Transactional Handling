@@ -1,0 +1,23 @@
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+class Transaction(Base):
+    __tablename__ = 'transactions'
+    
+    id = Column(Integer, primary_key=True)
+    wallet_address = Column(String)
+    amount = Column(Integer)
+    transaction_type = Column(String)  # 'deposit' or 'withdrawal'
+
+engine = create_engine('sqlite:///transactions.db')
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+
+def log_transaction(wallet_address, amount, transaction_type):
+    session = Session()
+    new_transaction = Transaction(wallet_address=wallet_address, amount=amount, transaction_type=transaction_type)
+    session.add(new_transaction)
+    session.commit()
