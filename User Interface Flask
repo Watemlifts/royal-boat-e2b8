@@ -1,0 +1,22 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/mine', methods=['POST'])
+def start_mining():
+    wallet_address = request.json['wallet_address']
+    miner = CryptoMiner(wallet_address)
+    miner.mine()  # This should ideally run in a separate thread or process
+    return jsonify({"status": "Mining started", "wallet_address": wallet_address})
+
+@app.route('/withdraw', methods=['POST'])
+def withdraw():
+    wallet_address = request.json['wallet_address']
+    amount = request.json['amount']
+    wallet = Wallet(wallet_address)
+    result = wallet.send_coins(amount)
+    log_transaction(wallet_address, amount, 'withdrawal')
+    return jsonify(result)
+
+if __name__ == '__main__':
+    app.run(debug=True)
